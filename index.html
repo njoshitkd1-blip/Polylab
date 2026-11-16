@@ -3,220 +3,1631 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>PoliLab — Think Politics</title>
-<meta name="description" content="An interactive political science learning lab for curious students.">
+
 <style>
-:root{
-  --bg:#0b0d12; --panel:#121722; --panel2:#171d2a; --text:#f5f7fb; --muted:#a8b0c2;
-  --line:#283142; --accent:#8ee6c5; --accent2:#9db7ff; --warm:#ffd28a; --danger:#ff9d9d;
-  --shadow:0 18px 60px rgba(0,0,0,.28); --radius:22px;
+
+/* =========================
+   BASIC SETUP
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-*{box-sizing:border-box} html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 10% 0%,#18243a 0,transparent 32%),radial-gradient(circle at 90% 10%,#182e2a 0,transparent 28%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
-a{color:inherit;text-decoration:none} button{font:inherit}
-.container{width:min(1180px,92vw);margin:auto}
-.topbar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
-.nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.04em;font-size:1.25rem}
-.logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#07110f;font-weight:1000}
-.navlinks{display:flex;gap:6px;overflow:auto}
-.navlinks a{padding:9px 12px;border-radius:10px;color:var(--muted);font-size:.9rem;white-space:nowrap}
-.navlinks a:hover{background:var(--panel2);color:var(--text)}
-.hero{padding:82px 0 56px}
-.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 11px;border:1px solid var(--line);border-radius:999px;color:var(--accent);background:rgba(142,230,197,.06);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
-.hero h1{font-size:clamp(3rem,8vw,6.8rem);line-height:.9;letter-spacing:-.075em;max-width:900px;margin:22px 0}
-.hero h1 span{color:var(--accent)}
-.hero p{max-width:700px;color:var(--muted);font-size:1.12rem}
-.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 17px;border-radius:13px;cursor:pointer;font-weight:800}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#07110f}
-.btn:hover{transform:translateY(-1px)}
-section{padding:58px 0}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}
-.section-head h2{font-size:2rem;letter-spacing:-.045em;margin:0}
-.section-head p{color:var(--muted);max-width:620px;margin:0}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 10px 35px rgba(0,0,0,.08);transition:.2s}
-.card:hover{transform:translateY(-3px);border-color:#3a465c}
-.card .icon{font-size:2rem}
-.card h3{margin:12px 0 6px;font-size:1.15rem}
-.card p{margin:0;color:var(--muted)}
-.tag{display:inline-block;margin-top:15px;margin-right:6px;padding:5px 8px;border-radius:999px;background:#202839;color:#c8d1e4;font-size:.72rem}
-.idea-card{cursor:pointer;min-height:190px}
-.search{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);outline:none;margin-bottom:16px}
-.search:focus{border-color:var(--accent)}
-.explain{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-.explain button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:8px 10px;border-radius:999px;cursor:pointer}
-.explain button.active{background:var(--accent);border-color:var(--accent);color:#07110f;font-weight:900}
-.detail{display:none;margin-top:16px;background:#0f141e;border:1px solid var(--line);border-radius:18px;padding:20px}
-.detail.show{display:block}
-.detail h4{margin:0 0 8px}
-.detail p{margin:7px 0;color:#d7dbea}
-.lab-grid{grid-template-columns:repeat(4,1fr)}
-.game{min-height:210px;display:flex;flex-direction:column;justify-content:space-between}
-.game .btn{align-self:flex-start}
-.question{font-size:1.12rem;font-weight:800;margin:8px 0 16px}
-.options{display:grid;gap:8px}
-.option{background:#1b2230;border:1px solid #30394b;color:var(--text);border-radius:12px;padding:10px;text-align:left;cursor:pointer}
-.option:hover{border-color:var(--accent2)}
-.feedback{margin-top:12px;padding:11px;border-radius:12px;display:none}
-.feedback.good{display:block;background:rgba(142,230,197,.1);color:var(--accent)}
-.feedback.bad{display:block;background:rgba(255,157,157,.1);color:var(--danger)}
-.debate{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.side{padding:24px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel)}
-.side.for{border-top:3px solid var(--accent)} .side.against{border-top:3px solid var(--warm)}
-.side ul{color:var(--muted);padding-left:20px}
-.progress-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-.progressbar{height:13px;background:#202735;border-radius:999px;overflow:hidden}
-.progressbar span{display:block;height:100%;width:42%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.stat{background:var(--panel);border:1px solid var(--line);padding:18px;border-radius:18px}
-.stat strong{display:block;font-size:1.8rem}
-.stat span{color:var(--muted);font-size:.85rem}
-.today{background:linear-gradient(135deg,rgba(157,183,255,.10),rgba(142,230,197,.07));border:1px solid #35435c;border-radius:28px;padding:28px}
-.today-grid{display:grid;grid-template-columns:1.4fr .6fr;gap:18px;align-items:center}
-footer{padding:45px 0;color:var(--muted);font-size:.85rem;border-top:1px solid rgba(255,255,255,.06)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
-.modal.show{display:flex}.modal-box{width:min(720px,100%);background:#111722;border:1px solid #3a455a;border-radius:25px;padding:26px;box-shadow:var(--shadow)}
-.close{float:right;background:transparent;border:0;color:var(--muted);font-size:1.5rem;cursor:pointer}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.lab-grid{grid-template-columns:repeat(2,1fr)}.today-grid,.progress-wrap{grid-template-columns:1fr}}
-@media(max-width:620px){.navlinks{display:none}.hero{padding-top:55px}.grid,.lab-grid,.debate,.stats{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:8px}.hero h1{font-size:3.4rem}}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #17243b 0%,
+            #090d15 35%,
+            #070a10 100%
+        );
+
+    color: #f5f7fb;
+    line-height: 1.6;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+section {
+    padding: 90px 0;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: rgba(7, 10, 16, 0.9);
+
+    backdrop-filter: blur(15px);
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
+}
+
+.navbar-inner {
+    min-height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.logo span {
+    color: #8ee6c5;
+}
+
+.nav-links {
+    display: flex;
+    gap: 22px;
+}
+
+.nav-links a {
+    color: #aab3c5;
+    font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+    color: #8ee6c5;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 88vh;
+
+    display: flex;
+    align-items: center;
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 7px 13px;
+
+    border:
+        1px solid rgba(142,230,197,0.3);
+
+    border-radius: 999px;
+
+    color: #8ee6c5;
+
+    font-size: 0.75rem;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size:
+        clamp(3rem, 8vw, 7rem);
+
+    line-height: 0.95;
+
+    margin: 25px 0;
+
+    letter-spacing: -5px;
+}
+
+.hero h1 span {
+    color: #8ee6c5;
+}
+
+.hero p {
+    max-width: 700px;
+
+    color: #aab3c5;
+
+    font-size: 1.1rem;
+}
+
+.button-row {
+    display: flex;
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-top: 30px;
+}
+
+.btn {
+    border: 1px solid #303b50;
+
+    background: #121a27;
+
+    color: #f5f7fb;
+
+    padding: 12px 18px;
+
+    border-radius: 12px;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+
+    border-color: #596982;
+}
+
+.btn-primary {
+    background: #8ee6c5;
+
+    color: #07110f;
+
+    border-color: #8ee6c5;
+}
+
+
+/* =========================
+   SECTION HEADINGS
+========================= */
+
+.section-label {
+    color: #8ee6c5;
+
+    font-size: 0.75rem;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+.section-title {
+    font-size: 2.6rem;
+
+    margin-top: 8px;
+
+    letter-spacing: -1px;
+}
+
+.section-description {
+    color: #aab3c5;
+
+    max-width: 700px;
+
+    margin-top: 10px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.card-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.055),
+            rgba(255,255,255,0.018)
+        );
+
+    border:
+        1px solid #293346;
+
+    border-radius: 22px;
+
+    padding: 25px;
+
+    transition: 0.25s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+
+    border-color: #52627c;
+}
+
+.card-icon {
+    font-size: 2.3rem;
+}
+
+.card h3 {
+    margin-top: 12px;
+
+    font-size: 1.3rem;
+}
+
+.card p {
+    color: #aab3c5;
+
+    margin-top: 8px;
+}
+
+.tags {
+    margin-top: 15px;
+}
+
+.tag {
+    display: inline-block;
+
+    background: #202a3a;
+
+    color: #cbd4e5;
+
+    border-radius: 999px;
+
+    padding: 5px 9px;
+
+    font-size: 0.7rem;
+
+    margin-right: 4px;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search {
+    width: 100%;
+
+    background: #111824;
+
+    color: white;
+
+    border:
+        1px solid #303b50;
+
+    border-radius: 13px;
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+    outline: none;
+}
+
+.search:focus {
+    border-color: #8ee6c5;
+}
+
+
+/* =========================
+   EXPLANATION BOX
+========================= */
+
+.explanation {
+    margin-top: 30px;
+
+    background: #111824;
+
+    border:
+        1px solid #293346;
+
+    border-radius: 22px;
+
+    padding: 30px;
+}
+
+.explanation-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+.explanation-top p {
+    color: #aab3c5;
+}
+
+.toggle {
+    display: flex;
+
+    background: #080c12;
+
+    border:
+        1px solid #303b50;
+
+    padding: 4px;
+
+    border-radius: 999px;
+}
+
+.toggle button {
+    border: none;
+
+    background: transparent;
+
+    color: #aab3c5;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    font-weight: bold;
+}
+
+.toggle button.active {
+    background: #8ee6c5;
+
+    color: #07110f;
+}
+
+.explanation-content {
+    margin-top: 25px;
+
+    background: #0b1018;
+
+    border:
+        1px solid #293346;
+
+    border-radius: 16px;
+
+    padding: 25px;
+}
+
+.explanation-content h3 {
+    color: #8ee6c5;
+
+    margin-bottom: 10px;
+}
+
+.explanation-content p {
+    color: #dce2ed;
+}
+
+
+/* =========================
+   THINKERS
+========================= */
+
+.thinker-card {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.thinker-card .btn {
+    margin-top: 20px;
+
+    align-self: flex-start;
+}
+
+
+/* =========================
+   LAB
+========================= */
+
+.lab-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.lab-card {
+    min-height: 240px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+
+/* =========================
+   DEBATE
+========================= */
+
+.debate {
+    background: #111824;
+
+    border:
+        1px solid #293346;
+
+    border-radius: 22px;
+
+    padding: 30px;
+}
+
+.debate textarea {
+    width: 100%;
+
+    min-height: 180px;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background: #080c12;
+
+    color: white;
+
+    border:
+        1px solid #303b50;
+
+    border-radius: 13px;
+
+    outline: none;
+
+    resize: vertical;
+}
+
+.debate textarea:focus {
+    border-color: #8ee6c5;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-box {
+    background: #111824;
+
+    border:
+        1px solid #293346;
+
+    border-radius: 22px;
+
+    padding: 30px;
+}
+
+.progress-bar {
+    height: 15px;
+
+    background: #252e3d;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+    margin: 20px 0 10px;
+}
+
+.progress-fill {
+    height: 100%;
+
+    width: 0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8ee6c5,
+            #9db7ff
+        );
+
+    transition: 0.5s;
+}
+
+
+/* =========================
+   CURRENT POLITICS
+========================= */
+
+.today {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(142,230,197,0.1),
+            rgba(157,183,255,0.1)
+        );
+
+    border:
+        1px solid #35435c;
+
+    border-radius: 25px;
+
+    padding: 35px;
+}
+
+.today h3 {
+    font-size: 1.7rem;
+}
+
+.today p {
+    color: #cbd4e5;
+
+    margin-top: 12px;
+
+    max-width: 800px;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    z-index: 5000;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,0.8);
+
+    padding: 20px;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    width: min(750px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #111824;
+
+    border:
+        1px solid #35435c;
+
+    border-radius: 25px;
+
+    padding: 30px;
+
+    position: relative;
+}
+
+.close {
+    position: absolute;
+
+    right: 20px;
+
+    top: 15px;
+
+    background: transparent;
+
+    color: #aab3c5;
+
+    border: none;
+
+    font-size: 2rem;
+}
+
+.modal-box h2 {
+    margin-bottom: 12px;
+}
+
+.modal-box p {
+    color: #cbd4e5;
+
+    margin-top: 12px;
+}
+
+.info-section {
+    margin-top: 25px;
+
+    padding: 20px;
+
+    background: #0b1018;
+
+    border-radius: 15px;
+
+    border: 1px solid #293346;
+}
+
+.info-section h3 {
+    color: #8ee6c5;
+
+    margin-bottom: 8px;
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-options {
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.quiz-option {
+    text-align: left;
+
+    width: 100%;
+
+    background: #192231;
+
+    color: white;
+
+    border:
+        1px solid #303b50;
+
+    padding: 14px;
+
+    border-radius: 12px;
+}
+
+.quiz-option:hover {
+    border-color: #8ee6c5;
+}
+
+.feedback {
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.correct {
+    background: rgba(142,230,197,0.1);
+
+    color: #8ee6c5;
+}
+
+.wrong {
+    background: rgba(255,120,120,0.1);
+
+    color: #ff9d9d;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    border-top:
+        1px solid rgba(255,255,255,0.07);
+
+    padding: 45px 0;
+
+    color: #8993a6;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 900px) {
+
+    .card-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .lab-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media(max-width: 650px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+
+        letter-spacing: -3px;
+    }
+
+    .card-grid,
+    .lab-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .toggle {
+        width: 100%;
+    }
+
+    .toggle button {
+        flex: 1;
+    }
+
+}
+
 </style>
 </head>
-<body>
-<header class="topbar">
-  <div class="container nav">
-    <a class="brand" href="#"><span class="logo">P</span><span>Poli<span style="color:var(--accent)">Lab</span></span></a>
-    <nav class="navlinks">
-      <a href="#explore">Explore</a><a href="#lab">Political Lab</a><a href="#debate">Debate</a><a href="#progress">Progress</a><a href="#today">Today</a>
-    </nav>
-  </div>
-</header>
 
-<main>
-<section class="hero">
-<div class="container">
-  <span class="eyebrow">Political science • reimagined</span>
-  <h1>Don't just learn politics.<br><span>Think about it.</span></h1>
-  <p>Explore political ideas, meet the thinkers behind them, test your reasoning, enter debates, and turn political knowledge into something you can actually use.</p>
-  <div class="ctas"><a class="btn primary" href="#explore">Start exploring →</a><a class="btn" href="#lab">Enter the Political Lab</a></div>
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<div class="logo">
+    Poli<span>Lab</span>
 </div>
+
+<div class="nav-links">
+
+<a href="#explore">
+    Explore
+</a>
+
+<a href="#thinkers">
+    Thinkers
+</a>
+
+<a href="#lab">
+    Political Lab
+</a>
+
+<a href="#debate">
+    Debate
+</a>
+
+<a href="#progress">
+    Progress
+</a>
+
+<a href="#today">
+    Politics Today
+</a>
+
+</div>
+
+</div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+<div class="container">
+
+<span class="badge">
+    POLITICAL SCIENCE • REIMAGINED
+</span>
+
+<h1>
+    Don't just learn politics.
+    <br>
+    <span>Think about it.</span>
+</h1>
+
+<p>
+    Explore political ideas, discover political thinkers,
+    test your reasoning, enter debates and connect
+    political theory with the world around you.
+</p>
+
+<div class="button-row">
+
+<a
+    href="#explore"
+    class="btn btn-primary"
+>
+    Start exploring →
+</a>
+
+<a
+    href="#lab"
+    class="btn"
+>
+    Enter Political Lab
+</a>
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- =========================
+     EXPLORE
+========================= -->
 
 <section id="explore">
+
 <div class="container">
-<div class="section-head"><div><span class="eyebrow">01 • Explore</span><h2>Ideas, thinkers & concepts</h2></div><p>Tap a topic. Switch between a simple explanation and a professional explanation. Learn at the level you need.</p></div>
-<input class="search" id="search" placeholder="Search liberalism, Rousseau, liberty, Marxism..." oninput="filterCards()">
-<div class="grid" id="ideaGrid">
-  <article class="card idea-card" data-search="liberalism ideology freedom rights individual"><div class="icon">🕊️</div><h3>Liberalism</h3><p>Explore liberty, individual rights, limited government and competing liberal traditions.</p><span class="tag">Ideology</span><span class="tag">Political theory</span></article>
-  <article class="card idea-card" data-search="marxism communism marx class capitalism ideology"><div class="icon">⚒️</div><h3>Marxism</h3><p>Explore class, capitalism, historical change, alienation and revolutionary politics.</p><span class="tag">Ideology</span></article>
-  <article class="card idea-card" data-search="democracy representation elections participation majority"><div class="icon">🗳️</div><h3>Democracy</h3><p>Explore participation, representation, elections, majority rule and minority rights.</p><span class="tag">Political system</span></article>
-  <article class="card idea-card" data-search="authoritarianism dictatorship totalitarianism power state"><div class="icon">🏛️</div><h3>Forms of rule</h3><p>Compare authoritarianism, dictatorship, totalitarianism, monarchy and other forms of rule.</p><span class="tag">Government</span></article>
-  <article class="card idea-card" data-search="liberty equality justice sovereignty power authority rights concepts"><div class="icon">⚖️</div><h3>Political concepts</h3><p>Start with liberty, equality, justice, power, authority, sovereignty and rights.</p><span class="tag">Concepts</span></article>
-  <article class="card idea-card" data-search="nationalism feminism anarchism conservatism socialism fascism capitalism"><div class="icon">🧭</div><h3>More ideologies</h3><p>Compare nationalism, feminism, anarchism, conservatism, socialism, fascism and capitalism.</p><span class="tag">Ideologies</span></article>
+
+<span class="section-label">
+    01 • EXPLORE
+</span>
+
+<h2 class="section-title">
+    Political Ideas
+</h2>
+
+<p class="section-description">
+    Click any topic to open its full explanation.
+    You can then switch between a simple explanation
+    and a professional political-science explanation.
+</p>
+
+
+<input
+    type="text"
+    id="searchInput"
+    class="search"
+    placeholder="Search political ideas..."
+>
+
+
+<div class="card-grid" id="ideaCards">
+
+
+<!-- LIBERALISM -->
+
+<div
+    class="card searchable"
+    data-search="liberalism liberty freedom rights individual government"
+>
+
+<div class="card-icon">
+    🕊️
 </div>
 
-<div class="card" style="margin-top:18px">
-  <h3>How do you want it explained?</h3>
-  <div class="explain">
-    <button class="active" onclick="setMode('kid',this)">🧒 Explain like I'm 15</button>
-    <button onclick="setMode('pro',this)">🎓 Explain professionally</button>
-  </div>
-  <div id="modeText"><p><b>Example — General Will:</b> Imagine your class has to decide a rule that everyone will follow. The “general will” is not simply whatever one person wants; it is Rousseau's idea of a common will directed toward the good of the political community.</p></div>
+<h3>
+    Liberalism
+</h3>
+
+<p>
+    Explore liberty, individual rights, limited government,
+    equality and different liberal traditions.
+</p>
+
+<div class="tags">
+
+<span class="tag">
+    Ideology
+</span>
+
+<span class="tag">
+    Political theory
+</span>
+
 </div>
+
+<br>
+
+<button
+    class="btn btn-primary"
+    onclick="openConcept('liberalism')"
+>
+    Explore Liberalism →
+</button>
+
 </div>
+
+
+<!-- MARXISM -->
+
+<div
+    class="card searchable"
+    data-search="marxism marx class capitalism communism socialism"
+>
+
+<div class="card-icon">
+    ⚒️
+</div>
+
+<h3>
+    Marxism
+</h3>
+
+<p>
+    Explore class conflict, capitalism, alienation,
+    exploitation and historical change.
+</p>
+
+<div class="tags">
+
+<span class="tag">
+    Ideology
+</span>
+
+</div>
+
+<br>
+
+<button
+    class="btn btn-primary"
+    onclick="openConcept('marxism')"
+>
+    Explore Marxism →
+</button>
+
+</div>
+
+
+<!-- DEMOCRACY -->
+
+<div
+    class="card searchable"
+    data-search="democracy representation elections participation rights"
+>
+
+<div class="card-icon">
+    🗳️
+</div>
+
+<h3>
+    Democracy
+</h3>
+
+<p>
+    Explore participation, representation, elections,
+    majority rule and political equality.
+</p>
+
+<div class="tags">
+
+<span class="tag">
+    Political system
+</span>
+
+</div>
+
+<br>
+
+<button
+    class="btn btn-primary"
+    onclick="openConcept('democracy')"
+>
+    Explore Democracy →
+</button>
+
+</div>
+
+
+<!-- FORMS OF RULE -->
+
+<div
+    class="card searchable"
+    data-search="dictatorship authoritarian authoritarianism totalitarian monarchy"
+>
+
+<div class="card-icon">
+    🏛️
+</div>
+
+<h3>
+    Forms of Rule
+</h3>
+
+<p>
+    Compare democracy, authoritarianism, dictatorship,
+    totalitarianism and monarchy.
+</p>
+
+<div class="tags">
+
+<span class="tag">
+    Government
+</span>
+
+</div>
+
+<br>
+
+<button
+    class="btn btn-primary"
+    onclick="openConcept('authoritarianism')"
+>
+    Explore Forms of Rule →
+</button>
+
+</div>
+
+
+<!-- POLITICAL CONCEPTS -->
+
+<div
+    class="card searchable"
+    data-search="liberty equality justice power authority sovereignty rights"
+>
+
+<div class="card-icon">
+    ⚖️
+</div>
+
+<h3>
+    Political Concepts
+</h3>
+
+<p>
+    Start with liberty, equality, justice, power,
+    authority, sovereignty and rights.
+</p>
+
+<div class="tags">
+
+<span class="tag">
+    Concepts
+</span>
+
+</div>
+
+<br>
+
+<button
+    class="btn btn-primary"
+    onclick="openConcept('concepts')"
+>
+    Explore Concepts →
+</button>
+
+</div>
+
+
+<!-- MORE IDEOLOGIES -->
+
+<div
+    class="card searchable"
+    data-search="socialism feminism nationalism conservatism fascism anarchism"
+>
+
+<div class="card-icon">
+    🧭
+</div>
+
+<h3>
+    More Ideologies
+</h3>
+
+<p>
+    Explore socialism, feminism, nationalism,
+    conservatism, anarchism, fascism and more.
+</p>
+
+<div class="tags">
+
+<span class="tag">
+    Ideologies
+</span>
+
+</div>
+
+<br>
+
+<button
+    class="btn btn-primary"
+    onclick="openConcept('ideologies')"
+>
+    Explore Ideologies →
+</button>
+
+</div>
+
+
+</div>
+
+
+<!-- =========================
+     EXPLANATION SWITCHER
+========================= -->
+
+<div class="explanation">
+
+<div class="explanation-top">
+
+<div>
+
+<h3>
+    How should we explain it?
+</h3>
+
+<p>
+    Switch between a simple student-friendly
+    explanation and a professional explanation.
+</p>
+
+</div>
+
+
+<div class="toggle">
+
+<button
+    id="kidButton"
+    class="active"
+    onclick="setExplanation('kid')"
+>
+    🧒 Explain Like I'm 15
+</button>
+
+<button
+    id="professionalButton"
+    onclick="setExplanation('professional')"
+>
+    🎓 Explain Professionally
+</button>
+
+</div>
+
+</div>
+
+
+<div class="explanation-content">
+
+<h3 id="explanationTitle">
+    General Will — Explain Like I'm 15
+</h3>
+
+<p id="explanationText">
+
+Imagine that your whole class has to decide
+a rule that everyone will follow.
+
+Rousseau's idea of the General Will is about
+what is best for the political community as a whole,
+rather than simply what one person wants.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- =========================
+     THINKERS
+========================= -->
 
 <section id="thinkers">
+
 <div class="container">
-<div class="section-head"><div><span class="eyebrow">02 • Thinkers</span><h2>Meet the minds behind the ideas</h2></div><p>Don't memorize biographies. Follow the ideas.</p></div>
-<div class="grid">
-  <article class="card"><div class="icon">🏺</div><h3>Plato</h3><p>Justice • philosopher-kings • ideal state</p><button class="btn" onclick="openThinker('Plato','Justice, the ideal state, philosopher-kings and the relationship between knowledge and political rule.')">Explore thinker</button></article>
-  <article class="card"><div class="icon">🏛️</div><h3>Aristotle</h3><p>Citizenship • constitutions • political community</p><button class="btn" onclick="openThinker('Aristotle','Citizenship, constitutions, political community and his classification of forms of government.')">Explore thinker</button></article>
-  <article class="card"><div class="icon">🔥</div><h3>Rousseau</h3><p>Social contract • general will • popular sovereignty</p><button class="btn" onclick="openThinker('Jean-Jacques Rousseau','The social contract, general will, freedom and popular sovereignty.')">Explore thinker</button></article>
-  <article class="card"><div class="icon">⚒️</div><h3>Karl Marx</h3><p>Class • capitalism • alienation</p><button class="btn" onclick="openThinker('Karl Marx','Class conflict, capitalism, alienation, historical materialism and revolutionary change.')">Explore thinker</button></article>
-  <article class="card"><div class="icon">🕊️</div><h3>John Stuart Mill</h3><p>Liberty • individuality • representative government</p><button class="btn" onclick="openThinker('John Stuart Mill','Individual liberty, the harm principle, individuality and representative government.')">Explore thinker</button></article>
-  <article class="card"><div class="icon">✊</div><h3>Gandhi & Ambedkar</h3><p>Freedom • society • democracy • equality</p><button class="btn" onclick="openThinker('Gandhi & Ambedkar','A starting point for comparing different approaches to freedom, social reform, equality and democracy in India.')">Compare ideas</button></article>
+
+<span class="section-label">
+    02 • POLITICAL THINKERS
+</span>
+
+<h2 class="section-title">
+    Meet the minds behind the ideas.
+</h2>
+
+<p class="section-description">
+    Don't just memorize names. Discover the ideas
+    they developed and the political questions they asked.
+</p>
+
+
+<div class="card-grid">
+
+
+<div class="card thinker-card">
+
+<div class="card-icon">
+    🏺
 </div>
+
+<h3>
+    Plato
+</h3>
+
+<p>
+    Justice • Ideal State • Philosopher-King
+</p>
+
+<button
+    class="btn"
+    onclick="openThinker('Plato')"
+>
+    Explore Plato →
+</button>
+
 </div>
+
+
+<div class="card thinker-card">
+
+<div class="card-icon">
+    🏛️
+</div>
+
+<h3>
+    Aristotle
+</h3>
+
+<p>
+    Citizenship • Constitutions • Political Community
+</p>
+
+<button
+    class="btn"
+    onclick="openThinker('Aristotle')"
+>
+    Explore Aristotle →
+</button>
+
+</div>
+
+
+<div class="card thinker-card">
+
+<div class="card-icon">
+    🔥
+</div>
+
+<h3>
+    Rousseau
+</h3>
+
+<p>
+    Social Contract • General Will • Popular Sovereignty
+</p>
+
+<button
+    class="btn"
+    onclick="openThinker('Rousseau')"
+>
+    Explore Rousseau →
+</button>
+
+</div>
+
+
+<div class="card thinker-card">
+
+<div class="card-icon">
+    ⚒️
+</div>
+
+<h3>
+    Karl Marx
+</h3>
+
+<p>
+    Class • Capitalism • Alienation
+</p>
+
+<button
+    class="btn"
+    onclick="openThinker('Marx')"
+>
+    Explore Marx →
+</button>
+
+</div>
+
+
+<div class="card thinker-card">
+
+<div class="card-icon">
+    🕊️
+</div>
+
+<h3>
+    John Stuart Mill
+</h3>
+
+<p>
+    Liberty • Individuality • Harm Principle
+</p>
+
+<button
+    class="btn"
+    onclick="openThinker('Mill')"
+>
+    Explore Mill →
+</button>
+
+</div>
+
+
+<div class="card thinker-card">
+
+<div class="card-icon">
+    🇮🇳
+</div>
+
+<h3>
+    Gandhi & Ambedkar
+</h3>
+
+<p>
+    Freedom • Equality • Society • Democracy
+</p>
+
+<button
+    class="btn"
+    onclick="openThinker('GandhiAmbedkar')"
+>
+    Compare Ideas →
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- =========================
+     POLITICAL LAB
+========================= -->
 
 <section id="lab">
+
 <div class="container">
-<div class="section-head"><div><span class="eyebrow">03 • Political Lab</span><h2>Learn by doing</h2></div><p>Short activities turn passive reading into active political thinking.</p></div>
-<div class="grid lab-grid">
-  <article class="card game"><div><div class="icon">🧠</div><h3>Quick Quiz</h3><p>Test a concept without looking at your notes.</p></div><button class="btn primary" onclick="startQuiz()">Start quiz</button></article>
-  <article class="card game"><div><div class="icon">🔎</div><h3>Guess the Thinker</h3><p>Identify a thinker from their idea.</p></div><button class="btn" onclick="guessThinker()">Play</button></article>
-  <article class="card game"><div><div class="icon">🕵️</div><h3>Spot the Fallacy</h3><p>Find the weak reasoning in a political argument.</p></div><button class="btn" onclick="fallacyGame()">Try it</button></article>
-  <article class="card game"><div><div class="icon">🎭</div><h3>Political Scenario</h3><p>Make a decision, then discover the theory behind it.</p></div><button class="btn primary" onclick="scenarioGame()">Enter scenario</button></article>
+
+<span class="section-label">
+    03 • POLITICAL LAB
+</span>
+
+<h2 class="section-title">
+    Learn by doing.
+</h2>
+
+<p class="section-description">
+    Politics isn't only something you read.
+    Test your reasoning.
+</p>
+
+
+<div class="lab-grid">
+
+
+<div class="card lab-card">
+
+<div>
+
+<div class="card-icon">
+    🧠
 </div>
+
+<h3>
+    Quick Quiz
+</h3>
+
+<p>
+    Test your political knowledge.
+</p>
+
 </div>
+
+<button
+    class="btn btn-primary"
+    onclick="startQuiz()"
+>
+    Start Quiz →
+</button>
+
+</div>
+
+
+<div class="card lab-card">
+
+<div>
+
+<div class="card-icon">
+    🔎
+</div>
+
+<h3>
+    Guess the Thinker
+</h3>
+
+<p>
+    Identify a thinker from an important idea.
+</p>
+
+</div>
+
+<button
+    class="btn"
+    onclick="guessThinker()"
+>
+    Play →
+</button>
+
+</div>
+
+
+<div class="card lab-card">
+
+<div>
+
+<div class="card-icon">
+    🕵️
+</div>
+
+<h3>
+    Spot the Fallacy
+</h3>
+
+<p>
+    Find the weakness in a political argument.
+</p>
+
+</div>
+
+<button
+    class="btn"
+    onclick="fallacyGame()"
+>
+    Try it →
+</button>
+
+</div>
+
+
+<div class="card lab-card">
+
+<div>
+
+<div class="card-icon">
+    🎭
+</div>
+
+<h3>
+    Political Scenario
+</h3>
+
+<p>
+    Make a political decision and think about
+    the theory behind it.
+</p>
+
+</div>
+
+<button
+    class="btn btn-primary"
+    onclick="scenarioGame()"
+>
+    Enter →
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- =========================
+     DEBATE
+========================= -->
 
 <section id="debate">
+
 <div class="container">
-<div class="section-head"><div><span class="eyebrow">04 • Debate Room</span><h2>Take a position.</h2></div><p>Good political thinking means being able to defend an argument and understand the strongest counterargument.</p></div>
+
+<span class="section-label">
+    04 • DEBATE ROOM
+</span>
+
+<h2 class="section-title">
+    Take a position.
+</h2>
+
+<p class="section-description">
+    Build an argument. Then challenge your own argument.
+</p>
+
+
 <div class="debate">
-<div class="side for"><h3>PROPOSITION</h3><p><b>“A democracy should sometimes restrict individual freedom to protect the democratic order.”</b></p><ul><li>What would a security argument say?</li><li>What would a civil-liberties argument say?</li><li>Where should the limit be?</li></ul></div>
-<div class="side against"><h3>YOUR CHALLENGE</h3><p>Write a 3-part argument:</p><ul><li>Claim — what do you believe?</li><li>Reason — why?</li><li>Counterargument — what is the strongest objection?</li></ul><button class="btn" onclick="document.getElementById('debateBox').scrollIntoView({behavior:'smooth'})">Start writing ↓</button></div>
-</div>
-<div class="card" id="debateBox" style="margin-top:16px"><h3>Your argument</h3><textarea id="argument" style="width:100%;min-height:150px;background:#0d121a;color:var(--text);border:1px solid var(--line);border-radius:14px;padding:14px" placeholder="Write your argument here..."></textarea><button class="btn primary" onclick="saveArgument()">Save to this device</button><span id="saved" style="margin-left:10px;color:var(--accent)"></span></div>
-</div>
-</section>
 
-<section id="progress">
-<div class="container">
-<div class="section-head"><div><span class="eyebrow">05 • Progress</span><h2>Your political journey</h2></div><p>This prototype stores simple progress locally on your device. No account required.</p></div>
-<div class="progress-wrap">
-<div class="card"><h3>Learning progress</h3><p style="color:var(--muted)">Complete activities to grow your local progress bar.</p><div class="progressbar"><span id="bar"></span></div><p id="progressLabel" style="color:var(--muted)">0 activities completed</p></div>
-<div class="stats"><div class="stat"><strong id="score">0</strong><span>Activities</span></div><div class="stat"><strong>4</strong><span>Learning paths</span></div><div class="stat"><strong>∞</strong><span>Questions to ask</span></div></div>
-</div>
-</div>
-</section>
+<h3>
+    Debate Topic
+</h3>
 
-<section id="today">
-<div class="container">
-<div class="section-head"><div><span class="eyebrow">06 • Politics Today</span><h2>Connect theory to the world.</h2></div><p>Current politics belongs here — but every event should lead back to a political question.</p></div>
-<div class="today">
-<div class="today-grid">
-<div><h3>Today's political question</h3><p style="font-size:1.25rem">When a government claims that a new policy is necessary for public security, what questions should citizens ask before accepting the claim?</p><div class="explain"><span class="tag">Power</span><span class="tag">Rights</span><span class="tag">Constitutionalism</span><span class="tag">Public accountability</span></div></div>
-<div><button class="btn primary" onclick="markComplete('Politics Today')">I explored this →</button></div>
-</div>
-</div>
-</div>
-</section>
-</main>
+<p style="margin-top:10px;color:#cbd4e5;">
 
-<footer><div class="container">PoliLab — a prototype for learning political science through ideas, questions and argument. Built as a static GitHub Pages site.</div></footer>
+<strong>
+Should a democracy ever restrict individual
+freedom to protect national security?
+</strong>
 
-<div class="modal" id="modal"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
+</p>
 
-<script>
-let completed = Number(localStorage.getItem('polilabCompleted')||0);
-function updateProgress(){
- document.getElementById('score').textContent=completed;
- document.getElementById('progressLabel').textContent=`${completed} activit${completed===1?'y':'ies'} completed`;
- document.getElementById('bar').style.width=Math.min(100,completed*10)+'%';
-}
-function markComplete(name){ completed++; localStorage.setItem('polilabCompleted',completed); updateProgress(); alert(`${name} completed. Nice work.`); }
-function openThinker(name,desc){document.getElementById('modalContent').innerHTML=`<span class="eyebrow">Political thinker</span><h2>${name}</h2><p>${desc}</p><h3>Explore next</h3><p style="color:var(--muted)">Try connecting this thinker to a concept, ideology, debate or scenario. This is where the full learning system can grow.</p><button class="btn primary" onclick="markComplete('${name}')">Mark explored</button>`;document.getElementById('modal').classList.add('show')}
-function closeModal(){document.getElementById('modal').classList.remove('show')}
-function setMode(mode,el){
- document.querySelectorAll('.explain button').forEach(b=>b.classList.remove('active')); el.classList.add('active');
- document.getElementById('modeText').innerHTML=mode==='kid'
- ? `<p><b>General Will — simple version:</b> Imagine a group trying to decide rules that everyone should live under. Rousseau's “general will” is about the common good of the political community, not simply adding up whatever each individual wants.</p>`
- : `<p><b>General Will — professional version:</b> Rousseau's concept of the general will refers to the collective political will directed toward the common good. It is central to his account of popular sovereignty and the legitimacy of political authority in the social contract.</p>`;
-}
-function filterCards(){const q=document.getElementById('search').value.toLowerCase();document.querySelectorAll('.idea-card').forEach(c=>c.style.display=c.dataset.search.includes(q)?'block':'none')}
-function gameModal(title,html){document.getElementById('modalContent').innerHTML=`<span class="eyebrow">Political Lab</span><h2>${title}</h2>${html}`;document.getElementById('modal').classList.add('show')}
-function startQuiz(){gameModal('Quick Quiz',`<div class="question">Which concept asks how political power can be limited by law?</div><div class="options"><button class="option" onclick="answer(this,false)">Majoritarianism</button><button class="option" onclick="answer(this,true)">Constitutionalism</button><button class="option" onclick="answer(this,false)">Anarchy</button></div><div class="feedback" id="fb"></div>`)}
-function guessThinker(){gameModal('Guess the Thinker',`<div class="question">Who is most closely associated with the “general will”?</div><div class="options"><button class="option" onclick="answer(this,false)">Hobbes</button><button class="option" onclick="answer(this,true)">Rousseau</button><button class="option" onclick="answer(this,false)">Mill</button></div><div class="feedback" id="fb"></div>`)}
-function fallacyGame(){gameModal('Spot the Fallacy',`<div class="question">“You support that policy because you're an idiot, so your argument is wrong.” What is this?</div><div class="options"><button class="option" onclick="answer(this,true)">Ad hominem</button><button class="option" onclick="answer(this,false)">Straw man</button><button class="option" onclick="answer(this,false)">False dilemma</button></div><div class="feedback" id="fb"></div>`)}
-function scenarioGame(){gameModal('Political Scenario',`<div class="question">A government wants to ban a form of political speech, arguing that it protects national security. What should you examine first?</div><div class="options"><button class="option" onclick="answer(this,true)">The justification, evidence, rights affected and limits on state power</button><button class="option" onclick="answer(this,false)">Whether the government is popular</button><button class="option" onclick="answer(this,false)">Whether everyone agrees</button></div><div class="feedback" id="fb"></div>`)}
-function answer(el,correct){const fb=document.getElementById('fb');fb.className='feedback '+(correct?'good':'bad');fb.textContent=correct?'Correct — now ask why. Political science begins where the obvious answer ends.':'Not quite. Look at the underlying political principle and try again.';if(correct)markComplete('Political Lab')}
-function saveArgument(){localStorage.setItem('polilabArgument',document.getElementById('argument').value);document.getElementById('saved').textContent='Saved on this device ✓';markComplete('Debate Room')}
-document.getElementById('argument').value=localStorage.getItem('polilabArgument')||'';
-updateProgress();
-</script>
-</body>
-</html>
+<p style="margin-top:15px;color:#aab3c5;">
+
+Think about liberty, security, constitutionalism,
+state power and individual rights.
+
+</p>
+
+
+<textarea
+    id="argument"
+    placeholder="Write your argument here..."
+></textarea>
+
+
+<button
+    class="btn btn-primary"
+    onclick="saveArgument()"
+    style="margin-top:12px;"
+>
+    Save My Argument
+</button>
+
+
+<span
+    
